@@ -23,8 +23,28 @@ inputs:
     description: 'Path where test artifacts should be stored.'
   useNetworkHost:
     required: false
-    default: false
+    default: 'false'
     description: 'Initialises Docker using the hosts network.'
+  enableCodeCoverage:
+    required: false
+    default: 'false'
+    description: 'Enables code coverage and allows access to the Coverage API.'
+  coverageOptions:
+    required: false
+    default: ''
+    description: 'Set extra options to pass to Coverage API. Available options are enableCyclomaticComplexity;generateHtmlReport;generateBadgeReport;assemblyFilters.'
+  coverageResultsPath:
+    required: false
+    default: 'artifacts'
+    description: 'Path where coverage results should be stored.'
+  coverageOnly:
+    required: false
+    default: 'false'
+    description: 'Run only coverage (no tests), useful to merge already generated coverages together.'
+  debugCodeOptimization:
+    required: false
+    default: 'false'
+    description: 'Code Optimization was introduced in 2020.1. Code Optimization mode defines whether Unity Editor compiles scripts in Debug or Release mode. Debug mode enables C# debugging and it is required in order to obtain accurate code coverage.'
   customParameters:
     required: false
     description: 'Extra parameters to configure the Unity editor run.'
