@@ -12,6 +12,11 @@ async function action() {
     testMode,
     artifactsPath,
     useHostNetwork,
+    enableCodeCoverage,
+    coverageOptions,
+    coverageResultsPath,
+    coverageOnly,
+    debugCodeOptimization,
     customParameters,
   } = Input.getFromUser();
   const baseImage = ImageTag.createForBase({ version: unityVersion, customImage });
@@ -28,6 +33,11 @@ async function action() {
       testMode,
       artifactsPath,
       useHostNetwork,
+      enableCodeCoverage,
+      coverageOptions,
+      coverageResultsPath,
+      coverageOnly,
+      debugCodeOptimization,
       customParameters,
     });
   } finally {
