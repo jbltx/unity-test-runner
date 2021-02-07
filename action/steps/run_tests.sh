@@ -32,11 +32,16 @@ fi
 # Coverage informations
 #
 if [[ -n "$ENABLE_COVERAGE" ]]; then
-  echo "Using Coverage"
-  echo "Coverage Results Path: $COVERAGE_RESULTS_PATH"
-  echo "Coverage extra options: $COVERAGE_OPTIONS"
-  if [[ -n "$COVERAGE_ONLY" ]]; then
-    echo "Coverage-only mode enabled."
+  source /steps/check_coverage_support.sh
+  if [[ $COVERAGE_UNSUPPORTED -gt 0 ]]; then
+    echo "The Coverage package is not supported for this project!"
+  else
+    echo "Using Coverage"
+    echo "Coverage Results Path: $COVERAGE_RESULTS_PATH"
+    echo "Coverage extra options: $COVERAGE_OPTIONS"
+    if [[ -n "$COVERAGE_ONLY" ]]; then
+      echo "Coverage-only mode enabled."
+    fi
   fi
 fi
 
@@ -89,6 +94,12 @@ ls -alh $UNITY_PROJECT_PATH
 # Coverage only if enabled
 #
 if [[ -n "$COVERAGE_ONLY" ]]; then
+
+  if [[ $COVERAGE_UNSUPPORTED -gt 0 ]]; then 
+    echo "Unable to activate Coverage-only mode (coverage not supported)."
+    TEST_RUNNER_EXIT_CODE=$COVERAGE_UNSUPPORTED
+    return
+  fi
 
   echo ""
   echo "###########################"
