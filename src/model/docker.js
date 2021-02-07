@@ -50,7 +50,7 @@ class Docker {
           `--env ENABLE_COVERAGE=1 \
            --env COVERAGE_OPTIONS=${coverageOptions} \
            --env COVERAGE_RESULTS_PATH=${coverageResultsPath} \
-           --env COVERAGE_ONLY=${coverageOnly}` 
+           ${coverageOnly ? '--env COVERAGE_ONLY=1' : ''}` 
           : ''} \
         --env DEBUG_CODE_OPTIMIZATION=${debugCodeOptimization} \
         --env HOME=/github/home \

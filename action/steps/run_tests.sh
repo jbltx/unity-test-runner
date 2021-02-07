@@ -19,6 +19,27 @@ FULL_ARTIFACTS_PATH=$GITHUB_WORKSPACE/$ARTIFACTS_PATH
 #
 echo "Using custom parameters $CUSTOM_PARAMETERS."
 
+#
+# Debug code optimization
+#
+if [[ -n "$DEBUG_CODE_OPTIMIZATION" ]]; then
+  echo "Using Debug code optimization."
+else 
+  echo "Not using Debug code optimization."
+fi
+
+#
+# Coverage informations
+#
+if [[ -n "$ENABLE_COVERAGE" ]]; then
+  echo "Using Coverage"
+  echo "Coverage Results Path: $COVERAGE_RESULTS_PATH"
+  echo "Coverage extra options: $COVERAGE_OPTIONS"
+  if [[ -n "$COVERAGE_ONLY" ]]; then
+    echo "Coverage-only mode enabled."
+  fi
+fi
+
 # Set the modes for testing
 case $TEST_MODE in
   editmode)
@@ -63,6 +84,43 @@ echo "#    Project directory    #"
 echo "###########################"
 echo ""
 ls -alh $UNITY_PROJECT_PATH
+
+#
+# Coverage only if enabled
+#
+if [[ -n "$COVERAGE_ONLY" ]]; then
+
+  echo ""
+  echo "###########################"
+  echo "#   Coverage-only mode    #"
+  echo "###########################"
+  echo ""
+
+  unity-editor 
+    -batchmode \
+    -logFile "$FULL_ARTIFACTS_PATH/coverage.log" \
+    -projectPath "$UNITY_PROJECT_PATH" \
+    $( (( -n "$DEBUG_CODE_OPTIMIZATION" )) && printf %s '-debugCodeOptimization' ) \
+    -enableCodeCoverage \
+    -coverageResultsPath "$COVERAGE_RESULTS_PATH" \
+    $( (( -n "$COVERAGE_OPTIONS" )) && printf %s '-coverageOptions "$COVERAGE_OPTIONS"' ) \
+    $CUSTOM_PARAMETERS \
+    -quit
+
+  # Catch exit code
+  COVERAGE_ONLY_EXIT_CODE=$?
+
+  # Display results
+  if [ $COVERAGE_ONLY_EXIT_CODE -eq 0 ]; then
+    echo "Coverage succeeded, no failures occurred";
+  else
+    echo "Unexpected exit code $COVERAGE_ONLY_EXIT_CODE";
+    TEST_RUNNER_EXIT_CODE=$COVERAGE_ONLY_EXIT_CODE
+  fi
+
+  return
+  
+fi
 
 #
 # Testing in EditMode
