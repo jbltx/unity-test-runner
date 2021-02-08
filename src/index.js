@@ -43,6 +43,7 @@ async function action() {
   } finally {
     // Set output
     await Output.setArtifactsPath(artifactsPath);
+    await Output.setCoverageResultsPath(coverageResultsPath);
   }
 }
 
