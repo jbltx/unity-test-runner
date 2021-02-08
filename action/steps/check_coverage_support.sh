@@ -11,7 +11,7 @@ if [[ -z "$UNITY_VERSION_MAJOR" || -z "$UNITY_VERSION_MINOR" ]]; then
     echo "Unable to parse the Unity version"
     COVERAGE_UNSUPPORTED=1
 else
-    if [[ $UNITY_VERSION_MAJOR -gt 2019 || [$UNITY_VERSION_MAJOR -eq 2019 && $UNITY_VERSION_MINOR -gt 2] ]]; then
+    if [[ $UNITY_VERSION_MAJOR -gt 2019 || ( $UNITY_VERSION_MAJOR -eq 2019 && $UNITY_VERSION_MINOR -gt 2 ) ]]; then
         echo "Checking manifest file for coverage package at \"$MANIFEST_PATH\"."
         cat "$MANIFEST_PATH" | grep -q "com.unity.testtools.codecoverage"
         coverage_package_present=$?
