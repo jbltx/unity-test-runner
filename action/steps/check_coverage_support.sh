@@ -18,7 +18,7 @@ else
         coverage_package_present=$?
         if [[ $coverage_package_present -gt 0 ]]; then 
             echo "Adding Coverage package manually in the manifest."
-            # todo
+            sed 's/,/, "com.unity.testtools.codecoverage":"0.3.1-preview",/1' "$MANIFEST_PATH"
         fi
     else 
         echo "Unity version $UNITY_VERSION doesn't support the Coverage package. Coverage requires Unity 2019.3+"
