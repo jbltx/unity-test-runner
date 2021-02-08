@@ -2,10 +2,11 @@
 
 MANIFEST_PATH="$UNITY_PROJECT_PATH/Packages/manifest.json"
 
-unity_ver="$UNITY_VERSION"
-semver=( ${unity_ver//./ } )
-UNITY_VERSION_MAJOR=$( echo "${semver[0]}" | bc )
-UNITY_VERSION_MINOR=$( echo "${semver[1]}" | bc )
+unity_ver=$UNITY_VERSION
+semver=${unity_ver#[vV]}
+UNITY_VERSION_MAJOR=${semver%%\.*}
+UNITY_VERSION_MINOR=${semver#*.}
+UNITY_VERSION_MINOR=${UNITY_VERSION_MINOR%.*}
 
 if [[ -z "$UNITY_VERSION_MAJOR" || -z "$UNITY_VERSION_MINOR" ]]; then 
     echo "Unable to parse the Unity version"
