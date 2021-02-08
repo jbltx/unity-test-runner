@@ -31,7 +31,6 @@ inputs:
     description: 'Enables code coverage and allows access to the Coverage API.'
   coverageOptions:
     required: false
-    default: ''
     description: 'Set extra options to pass to Coverage API. Available options are enableCyclomaticComplexity;generateHtmlReport;generateBadgeReport;assemblyFilters.'
   coverageResultsPath:
     required: false
