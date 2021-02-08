@@ -24,6 +24,7 @@ echo "Using custom parameters $CUSTOM_PARAMETERS."
 #
 if [[ -n "$DEBUG_CODE_OPTIMIZATION" ]]; then
   echo "Using Debug code optimization."
+  debugCodeOptimization="-debugCodeOptimization"
 else 
   echo "Not using Debug code optimization."
 fi
@@ -36,11 +37,20 @@ if [[ -n "$ENABLE_COVERAGE" ]]; then
   if [[ $COVERAGE_UNSUPPORTED -gt 0 ]]; then
     echo "The Coverage package is not supported for this project!"
   else
-    echo "Using Coverage"
-    echo "Coverage Results Path: $COVERAGE_RESULTS_PATH"
-    echo "Coverage extra options: $COVERAGE_OPTIONS"
+    echo "Using Coverage"   
     if [[ -n "$COVERAGE_ONLY" ]]; then
       echo "Coverage-only mode enabled."
+    fi
+    enableCodeCoverage="-enableCodeCoverage"
+    if [[ -n "$COVERAGE_RESULTS_PATH" ]]; then 
+      coverageResultsPath="-coverageResultsPath $COVERAGE_RESULTS_PATH"
+    else 
+      coverageResultsPath="$FULL_ARTIFACTS_PATH"
+    fi
+    echo "Coverage Results Path: $COVERAGE_RESULTS_PATH"
+    if [[ -n "$COVERAGE_OPTIONS" ]]; then 
+      coverageOptions="-coverageOptions $COVERAGE_OPTIONS"
+      echo "Coverage extra options: $COVERAGE_OPTIONS"
     fi
   fi
 fi
@@ -111,10 +121,10 @@ if [[ -n "$COVERAGE_ONLY" ]]; then
     -batchmode \
     -logFile "$FULL_ARTIFACTS_PATH/coverage.log" \
     -projectPath "$UNITY_PROJECT_PATH" \
-    $( (( -n "$DEBUG_CODE_OPTIMIZATION" )) && printf %s '-debugCodeOptimization' ) \
-    -enableCodeCoverage \
-    -coverageResultsPath "$COVERAGE_RESULTS_PATH" \
-    $( (( -n "$COVERAGE_OPTIONS" )) && printf %s '-coverageOptions "$COVERAGE_OPTIONS"' ) \
+    $debugCodeOptimization \
+    $enableCodeCoverage \
+    $coverageResultsPath \
+    $coverageOptions \
     $CUSTOM_PARAMETERS \
     -quit
 
@@ -150,10 +160,10 @@ if [ $EDIT_MODE = true ]; then
     -runTests \
     -testPlatform editmode \
     -testResults "$FULL_ARTIFACTS_PATH/editmode-results.xml" \
-    $( (( -n "$DEBUG_CODE_OPTIMIZATION" )) && printf %s '-debugCodeOptimization' ) \
-    $( (( $COVERAGE_UNSUPPORTED -eq 0 )) && (( -n "$ENABLE_COVERAGE" )) && printf %s '-enableCodeCoverage' ) \
-    $( (( $COVERAGE_UNSUPPORTED -eq 0 )) && (( -n "$COVERAGE_RESULTS_PATH" )) && printf %s '-coverageResultsPath "$COVERAGE_RESULTS_PATH"' ) \
-    $( (( $COVERAGE_UNSUPPORTED -eq 0 )) && (( -n "$COVERAGE_OPTIONS" )) && printf %s '-coverageOptions "$COVERAGE_OPTIONS"' ) \
+    $debugCodeOptimization \
+    $enableCodeCoverage \
+    $coverageResultsPath \
+    $coverageOptions \
     $CUSTOM_PARAMETERS
 
   # Catch exit code
@@ -191,10 +201,10 @@ if [ $PLAY_MODE = true ]; then
     -runTests \
     -testPlatform playmode \
     -testResults "$FULL_ARTIFACTS_PATH/playmode-results.xml" \
-    $( (( -n "$DEBUG_CODE_OPTIMIZATION" )) && printf %s '-debugCodeOptimization' ) \
-    $( (( $COVERAGE_UNSUPPORTED -eq 0 )) && (( -n "$ENABLE_COVERAGE" )) && printf %s '-enableCodeCoverage' ) \
-    $( (( $COVERAGE_UNSUPPORTED -eq 0 )) && (( -n "$COVERAGE_RESULTS_PATH" )) && printf %s '-coverageResultsPath "$COVERAGE_RESULTS_PATH"' ) \
-    $( (( $COVERAGE_UNSUPPORTED -eq 0 )) && (( -n "$COVERAGE_OPTIONS" )) && printf %s '-coverageOptions "$COVERAGE_OPTIONS"' ) \
+    $debugCodeOptimization \
+    $enableCodeCoverage \
+    $coverageResultsPath \
+    $coverageOptions \
     $CUSTOM_PARAMETERS
 
   # Catch exit code
