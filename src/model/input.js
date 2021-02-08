@@ -21,7 +21,7 @@ class Input {
     const rawProjectPath = getInput('projectPath') || '.';
     const rawArtifactsPath = getInput('artifactsPath') || 'artifacts';
     const rawUseHostNetwork = getInput('useHostNetwork') || 'false';
-    const rawEnableCodeCoverage = getInput() || 'false';
+    const rawEnableCodeCoverage = getInput('enableCodeCoverage') || 'false';
     const rawCoverageOptions = getInput('coverageOptions') || '';
     const rawCoverageResultsPath = getInput('coverageResultsPath') || 'artifacts';
     const rawCoverageOnly = getInput('coverageOnly') || 'false';
