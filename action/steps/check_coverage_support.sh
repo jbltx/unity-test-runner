@@ -9,7 +9,7 @@ UNITY_VERSION_MINOR=${semver#*.}
 UNITY_VERSION_MINOR=${UNITY_VERSION_MINOR%.*}
 
 CODE_COVERAGE_PACKAGE_NAME="com.unity.testtools.codecoverage"
-CODE_COVERAGE_PACKAGE_VERSION="0.4.0-preview.6"
+CODE_COVERAGE_PACKAGE_VERSION="0.4.2-preview"
 
 if [[ -z "$UNITY_VERSION_MAJOR" || -z "$UNITY_VERSION_MINOR" ]]; then 
     echo "Unable to parse the Unity version"
