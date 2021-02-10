@@ -23,9 +23,9 @@ else
             echo "Adding Coverage package manually in the manifest."
             regex_pattern=$( printf '0,/,/s//,\\n    "%s":"%s",/' "$CODE_COVERAGE_PACKAGE_NAME" "$CODE_COVERAGE_PACKAGE_VERSION" )
             sed "$regex_pattern" "$MANIFEST_PATH" > "$MANIFEST_PATH"
-            cat "$MANIFEST_PATH" | grep -q "$CODE_COVERAGE_PACKAGE_NAME"
-            coverage_package_present=$?
-            if [[ $coverage_package_present -gt 0 ]]; then 
+            cat "$MANIFEST_PATH"
+            coverage_package_present2=$( cat "$MANIFEST_PATH" | grep -q "$CODE_COVERAGE_PACKAGE_NAME" )
+            if [[ $coverage_package_present2 -gt 0 ]]; then 
               echo "Unable to insert package into the Unity Project manifest file \"$MANIFEST_PATH\""
               COVERAGE_UNSUPPORTED=1
             fi
