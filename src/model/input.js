@@ -21,6 +21,11 @@ class Input {
     const rawProjectPath = getInput('projectPath') || '.';
     const rawArtifactsPath = getInput('artifactsPath') || 'artifacts';
     const rawUseHostNetwork = getInput('useHostNetwork') || 'false';
+    const rawEnableCodeCoverage = getInput('enableCodeCoverage') || 'false';
+    const rawCoverageOptions = getInput('coverageOptions') || '';
+    const rawCoverageResultsPath = getInput('coverageResultsPath') || 'artifacts';
+    const rawCoverageOnly = getInput('coverageOnly') || 'false';
+    const rawDebugCodeOptimization = getInput('debugCodeOptimization') || 'false';
     const customParameters = getInput('customParameters') || '';
 
     // Validate input
@@ -40,12 +45,33 @@ class Input {
       throw new Error(`Invalid useHostNetwork "${rawUseHostNetwork}"`);
     }
 
+    if (rawEnableCodeCoverage !== 'true' && rawEnableCodeCoverage !== 'false') {
+      throw new Error(`Invalid enableCodeCoverage "${rawEnableCodeCoverage}"`);
+    }
+
+    if (!this.isValidFolderName(rawCoverageResultsPath)) {
+      throw new Error(`Invalid coverageResultsPath "${rawCoverageResultsPath}"`);
+    }
+
+    if (rawCoverageOnly !== 'true' && rawCoverageOnly !== 'false') {
+      throw new Error(`Invalid coverageOnly "${rawCoverageOnly}"`);
+    }
+
+    if (rawDebugCodeOptimization !== 'true' && rawDebugCodeOptimization !== 'false') {
+      throw new Error(`Invalid debugCodeOptimization "${rawDebugCodeOptimization}"`);
+    }
+
     // Sanitise input
     const projectPath = rawProjectPath.replace(/\/$/, '');
     const artifactsPath = rawArtifactsPath.replace(/\/$/, '');
     const useHostNetwork = rawUseHostNetwork === 'true';
     const unityVersion =
       rawUnityVersion === 'auto' ? UnityVersionParser.read(projectPath) : rawUnityVersion;
+    const enableCodeCoverage = rawEnableCodeCoverage === 'true';
+    const coverageOptions = rawCoverageOptions;
+    const coverageResultsPath = rawCoverageResultsPath.replace(/\/$/, '');
+    const coverageOnly = rawCoverageOnly === 'true';
+    const debugCodeOptimization = rawDebugCodeOptimization === 'true';
 
     // Return sanitised input
     return {
@@ -55,6 +81,11 @@ class Input {
       testMode,
       artifactsPath,
       useHostNetwork,
+      enableCodeCoverage,
+      coverageOptions,
+      coverageResultsPath,
+      coverageOnly,
+      debugCodeOptimization,
       customParameters,
     };
   }

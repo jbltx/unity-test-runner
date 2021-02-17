@@ -25,6 +25,11 @@ class Docker {
       testMode,
       artifactsPath,
       useHostNetwork,
+      enableCodeCoverage,
+      coverageOptions,
+      coverageResultsPath,
+      coverageOnly,
+      debugCodeOptimization,
       customParameters,
     } = parameters;
 
@@ -41,6 +46,13 @@ class Docker {
         --env TEST_MODE="${testMode}" \
         --env ARTIFACTS_PATH="${artifactsPath}" \
         --env CUSTOM_PARAMETERS="${customParameters}" \
+        ${enableCodeCoverage ? 
+          `--env ENABLE_COVERAGE=1 \
+           --env COVERAGE_OPTIONS=${coverageOptions} \
+           --env COVERAGE_RESULTS_PATH=${coverageResultsPath} \
+           ${coverageOnly ? '--env COVERAGE_ONLY=1' : ''}` 
+          : ''} \
+        --env DEBUG_CODE_OPTIMIZATION=${debugCodeOptimization} \
         --env HOME=/github/home \
         --env GITHUB_REF \
         --env GITHUB_SHA \
